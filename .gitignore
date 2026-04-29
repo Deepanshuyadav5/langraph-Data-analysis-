@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+*.log
+*.err
+.env
+.venv/
+venv/
+
+streamlit_app.py
+
+frontend/node_modules/
+frontend/dist/
+frontend/*.log
+frontend/*.err

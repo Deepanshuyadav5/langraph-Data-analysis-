@@ -1,0 +1,13 @@
+fastapi
+uvicorn[standard]
+python-multipart
+langchain-groq
+langchain-core
+langgraph
+pandas
+matplotlib
+seaborn
+plotly
+scikit-learn
+python-dotenv
+openpyxl
