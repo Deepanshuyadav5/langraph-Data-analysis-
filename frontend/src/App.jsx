@@ -21,7 +21,7 @@ import {
 } from "lucide-react";
 
 const Plot = createPlotlyComponent(Plotly);
-const API_BASE = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000";
+const API_BASE = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
 const COLORS = ["#176b63", "#d47635", "#4e6f50", "#9a4d3c", "#5271a3", "#c0a03d"];
 
 const chartTypes = [

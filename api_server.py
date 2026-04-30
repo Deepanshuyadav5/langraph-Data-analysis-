@@ -15,7 +15,6 @@ import numpy as np
 import pandas as pd
 from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 
@@ -441,8 +440,12 @@ def advanced_prediction(request: AdvancedPredictionRequest) -> dict[str, Any]:
     }
 
 
-# Serve static frontend files in production
-DIST_DIR = ROOT / "dist"
+# Serve static frontend files in production. Render's combined-service build
+# creates frontend/dist unless the build command moves it to the repo root.
+DIST_DIR = ROOT / "frontend" / "dist"
+if not DIST_DIR.exists():
+    DIST_DIR = ROOT / "dist"
+
 if DIST_DIR.exists():
     @app.get("/{path:path}")
     async def serve_frontend(path: str):
