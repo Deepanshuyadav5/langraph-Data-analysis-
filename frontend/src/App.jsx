@@ -435,6 +435,73 @@ function PlotPanel({ divId, figure, className = "", height }) {
   );
 }
 
+function LandingHero({ onUpload, onSample, loading }) {
+  const features = [
+    { label: "AI insights", value: "Groq + LangGraph" },
+    { label: "Charts", value: "Plotly dashboard" },
+    { label: "Checks", value: "Quality + prediction" },
+  ];
+
+  return (
+    <section className="landing-hero" aria-label="Langalytics landing">
+      <div className="hero-copy">
+        <p className="eyebrow">LangGraph powered analytics</p>
+        <h2>Langalytics turns raw CSV files into automated data analysis.</h2>
+        <p>
+          Upload a dataset and get summaries, AI insights, visualizations, prediction workflows,
+          and data quality checks in one interactive workspace.
+        </p>
+        <div className="hero-actions">
+          <label className="button primary hero-upload">
+            <Upload size={18} />
+            Upload dataset
+            <input type="file" accept=".csv,.xlsx,.xls" onChange={onUpload} />
+          </label>
+          <button className="button ghost" type="button" onClick={onSample} disabled={loading}>
+            <Play size={17} />
+            Try sample
+          </button>
+        </div>
+        <div className="hero-feature-row">
+          {features.map((feature) => (
+            <div key={feature.label}>
+              <span>{feature.label}</span>
+              <strong>{feature.value}</strong>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="portal-stage" aria-hidden="true">
+        <div className="orbit-ring ring-one" />
+        <div className="orbit-ring ring-two" />
+        <div className="portal-card upload-card">
+          <Database size={22} />
+          <span>sales_data.csv</span>
+          <strong>42K rows scanned</strong>
+        </div>
+        <div className="portal-card insight-card">
+          <Brain size={22} />
+          <span>AI Insight</span>
+          <strong>Revenue spikes every Q4</strong>
+        </div>
+        <div className="portal-card chart-card">
+          <BarChart3 size={22} />
+          <span>Auto chart</span>
+          <strong>Heatmap + trendline ready</strong>
+        </div>
+        <div className="data-stream stream-a" />
+        <div className="data-stream stream-b" />
+        <div className="data-stream stream-c" />
+        <div className="portal-core">
+          <Sparkles size={34} />
+          <span>Langalytics</span>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function App() {
   const [theme, setTheme] = useState("aurora");
   const [dataset, setDataset] = useState(null);
@@ -734,9 +801,9 @@ export default function App() {
             <BarChart3 size={23} />
           </div>
           <div>
-            <p className="eyebrow">AI Data Analysis</p>
-            <h1>InsightForge Dashboard</h1>
-            <p className="hero-line">Upload, visualize, predict, and audit datasets in one live workspace.</p>
+            <p className="eyebrow">AI automated data analysis</p>
+            <h1>Langalytics</h1>
+            <p className="hero-line">Upload data, generate insights, build charts, and predict outcomes.</p>
           </div>
         </div>
         <div className="topbar-actions">
@@ -767,64 +834,44 @@ export default function App() {
         </div>
       </header>
 
-      <main className="workspace">
-        <aside className="side-panel">
-          <div className="dataset-block">
-            <span className="panel-label">Dataset</span>
-            <strong>{dataset?.name || "No dataset loaded"}</strong>
-            <p>{status || "Ready"}</p>
-          </div>
+      <main className={`workspace ${!dataset ? "workspace-landing" : ""}`}>
+        {dataset && (
+          <aside className="side-panel">
+            <div className="dataset-block">
+              <span className="panel-label">Dataset</span>
+              <strong>{dataset.name}</strong>
+              <p>{status || "Ready"}</p>
+            </div>
 
-          <nav className="tab-list" aria-label="Dashboard sections">
-            {tabs.map((tab) => {
-              const Icon = tab.icon;
-              return (
-                <button
-                  type="button"
-                  key={tab.id}
-                  className={activeTab === tab.id ? "active" : ""}
-                  onClick={() => setActiveTab(tab.id)}
-                  disabled={!dataset}
-                >
-                  <Icon size={17} />
-                  {tab.label}
-                </button>
-              );
-            })}
-          </nav>
+            <nav className="tab-list" aria-label="Dashboard sections">
+              {tabs.map((tab) => {
+                const Icon = tab.icon;
+                return (
+                  <button
+                    type="button"
+                    key={tab.id}
+                    className={activeTab === tab.id ? "active" : ""}
+                    onClick={() => setActiveTab(tab.id)}
+                  >
+                    <Icon size={17} />
+                    {tab.label}
+                  </button>
+                );
+              })}
+            </nav>
 
-          {dataset ? (
             <div className="side-metrics">
               <Metric label="Rows" value={formatNumber(dataset.overview.rows, 0)} />
               <Metric label="Columns" value={dataset.overview.columns} />
               <Metric label="Missing" value={formatNumber(dataset.overview.missingValues, 0)} />
               <Metric label="Numeric" value={dataset.overview.numericColumns} />
             </div>
-          ) : (
-            <div className="empty-panel">
-              <Database size={24} />
-              <span>Upload a file or open the sample dataset.</span>
-            </div>
-          )}
-        </aside>
+          </aside>
+        )}
 
         <section className="content-panel">
           {!dataset ? (
-            <div className="empty-state">
-              <Database size={34} />
-              <h2>Dataset workspace</h2>
-              <div className="empty-actions">
-                <label className="button primary">
-                  <Upload size={17} />
-                  Upload data
-                  <input type="file" accept=".csv,.xlsx,.xls" onChange={handleUpload} />
-                </label>
-                <button className="button" type="button" onClick={loadSample} disabled={loading}>
-                  <Play size={17} />
-                  Open sample
-                </button>
-              </div>
-            </div>
+            <LandingHero onUpload={handleUpload} onSample={loadSample} loading={loading} />
           ) : (
             <>
               {activeTab === "overview" && (
