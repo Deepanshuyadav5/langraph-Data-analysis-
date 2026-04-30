@@ -11,6 +11,7 @@ import {
   FileDown,
   Layers,
   LineChart,
+  Palette,
   PieChart,
   Play,
   Plus,
@@ -42,6 +43,12 @@ const tabs = [
   { id: "prediction", label: "Prediction", icon: Sparkles },
   { id: "quality", label: "Quality", icon: Activity },
   { id: "data", label: "Data", icon: Table2 },
+];
+
+const themes = [
+  { id: "aurora", label: "Aurora" },
+  { id: "ember", label: "Ember" },
+  { id: "cosmic", label: "Cosmic" },
 ];
 
 const plotConfig = {
@@ -429,6 +436,7 @@ function PlotPanel({ divId, figure, className = "", height }) {
 }
 
 export default function App() {
+  const [theme, setTheme] = useState("aurora");
   const [dataset, setDataset] = useState(null);
   const [activeTab, setActiveTab] = useState("overview");
   const [loading, setLoading] = useState(false);
@@ -719,13 +727,28 @@ export default function App() {
   }
 
   return (
-    <div className="app-shell">
+    <div className="app-shell" data-theme={theme}>
       <header className="topbar">
         <div>
           <p className="eyebrow">AI Data Analysis</p>
           <h1>Interactive Dashboard</h1>
         </div>
         <div className="topbar-actions">
+          <div className="theme-switcher" aria-label="Theme colors">
+            <Palette size={16} />
+            {themes.map((item) => (
+              <button
+                type="button"
+                key={item.id}
+                className={theme === item.id ? "active" : ""}
+                onClick={() => setTheme(item.id)}
+                title={`${item.label} theme`}
+                aria-label={`${item.label} theme`}
+              >
+                <span>{item.label}</span>
+              </button>
+            ))}
+          </div>
           <label className="button primary">
             <Upload size={17} />
             Upload
