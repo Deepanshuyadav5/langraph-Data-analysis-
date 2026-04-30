@@ -729,9 +729,15 @@ export default function App() {
   return (
     <div className="app-shell" data-theme={theme}>
       <header className="topbar">
-        <div>
-          <p className="eyebrow">AI Data Analysis</p>
-          <h1>Interactive Dashboard</h1>
+        <div className="brand-block">
+          <div className="brand-mark" aria-hidden="true">
+            <BarChart3 size={23} />
+          </div>
+          <div>
+            <p className="eyebrow">AI Data Analysis</p>
+            <h1>InsightForge Dashboard</h1>
+            <p className="hero-line">Upload, visualize, predict, and audit datasets in one live workspace.</p>
+          </div>
         </div>
         <div className="topbar-actions">
           <div className="theme-switcher" aria-label="Theme colors">
