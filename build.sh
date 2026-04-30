@@ -1,0 +1,13 @@
+#!/bin/bash
+# Build script for Render deployment
+
+# Install Python dependencies
+pip install -r requirements.txt
+
+# Build frontend
+cd frontend
+npm install
+npm run build
+cd ..
+
+echo "Build complete!"

@@ -15,19 +15,29 @@ import numpy as np
 import pandas as pd
 from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 
 
 app = FastAPI(title="AI Data Analysis API", version="1.0.0")
 
+LOCAL_CORS_ORIGINS = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
+
+cors_origins = [
+    origin.strip()
+    for origin in os.getenv("CORS_ORIGINS", "").split(",")
+    if origin.strip()
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",
-        "http://127.0.0.1:5173",
-        "http://localhost:3000",
-        "http://127.0.0.1:3000",
-    ],
+    allow_origins=cors_origins or LOCAL_CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -429,3 +439,18 @@ def advanced_prediction(request: AdvancedPredictionRequest) -> dict[str, Any]:
         "bestR2": best["r2"],
         "results": results,
     }
+
+
+# Serve static frontend files in production
+DIST_DIR = ROOT / "dist"
+if DIST_DIR.exists():
+    @app.get("/{path:path}")
+    async def serve_frontend(path: str):
+        file_path = DIST_DIR / path
+        if file_path.is_file():
+            return FileResponse(file_path)
+        # Serve index.html for SPA routing
+        index_path = DIST_DIR / "index.html"
+        if index_path.is_file():
+            return FileResponse(index_path)
+        return {"error": "Not found"}

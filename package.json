@@ -1,0 +1,26 @@
+{
+  "name": "langgraph-data-analysis",
+  "version": "1.0.0",
+  "description": "AI Data Analysis Dashboard with LangGraph",
+  "scripts": {
+    "start": "uvicorn api_server:app --host 0.0.0.0 --port $PORT",
+    "dev": "uvicorn api_server:app --reload",
+    "build:frontend": "cd frontend && npm install && npm run build",
+    "install-all": "pip install -r requirements.txt && cd frontend && npm install"
+  },
+  "dependencies": {
+    "fastapi": "^0.115.0",
+    "uvicorn": "^0.32.0",
+    "python-multipart": "^0.0.12",
+    "langchain-groq": "^0.2.0",
+    "langchain-core": "^0.3.0",
+    "langgraph": "^0.2.0",
+    "pandas": "^2.2.0",
+    "matplotlib": "^3.9.0",
+    "seaborn": "^0.13.0",
+    "plotly": "^5.24.0",
+    "scikit-learn": "^1.6.0",
+    "python-dotenv": "^1.0.0",
+    "openpyxl": "^3.1.0"
+  }
+}
