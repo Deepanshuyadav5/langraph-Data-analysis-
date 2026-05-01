@@ -1095,7 +1095,7 @@ export default function App() {
                       </label>
                       <div className="button-row">
                         <button className="button primary" type="button" onClick={trainBasicPrediction} disabled={loading}>
-                          <Play size={17} />
+                          <Zap size={17} />
                           Train
                         </button>
                         <button className="button" type="button" onClick={compareModels} disabled={loading}>
