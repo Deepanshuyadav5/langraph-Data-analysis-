@@ -4,6 +4,7 @@ import Plotly from "plotly.js-dist-min";
 import html2canvas from "html2canvas";
 import {
   Activity,
+  ArrowRight,
   BarChart3,
   Brain,
   Database,
@@ -12,17 +13,19 @@ import {
   Layers,
   LineChart,
   PieChart,
-  Play,
   Plus,
+  Shield,
   Sparkles,
   Table2,
   Trash2,
+  TrendingUp,
   Upload,
+  Zap,
 } from "lucide-react";
 
 const Plot = createPlotlyComponent(Plotly);
 const API_BASE = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
-const COLORS = ["#176b63", "#d47635", "#4e6f50", "#9a4d3c", "#5271a3", "#c0a03d"];
+const COLORS = ["#14b8a6", "#f59e0b", "#60a5fa", "#f472b6", "#a78bfa", "#34d399"];
 
 const chartTypes = [
   { value: "bar", label: "Bar", icon: BarChart3 },
@@ -431,40 +434,44 @@ function PlotPanel({ divId, figure, className = "", height }) {
   );
 }
 
-function LandingHero({ onUpload, onSample, loading }) {
-  const features = [
-    { label: "AI insights", value: "Groq + LangGraph" },
-    { label: "Charts", value: "Plotly dashboard" },
-    { label: "Checks", value: "Quality + prediction" },
-  ];
-
+function LandingHero({ onUpload, loading }) {
   return (
     <section className="landing-hero" aria-label="Langalytics landing">
       <div className="hero-copy">
-        <p className="eyebrow">LangGraph powered analytics</p>
-        <h2>Langalytics turns raw CSV files into automated data analysis.</h2>
+        <div className="hero-badge">
+          <Zap size={14} />
+          <span>AI-Powered Analytics Engine</span>
+        </div>
+        <h2>
+          Transform your <span className="gradient-text">raw data</span> into
+          actionable intelligence
+        </h2>
         <p>
-          Upload a dataset and get summaries, AI insights, visualizations, prediction workflows,
-          and data quality checks in one interactive workspace.
+          Langalytics combines LangGraph AI agents with interactive visualizations
+          to deliver instant insights, predictive models, and quality reports
+          from any dataset.
         </p>
         <div className="hero-actions">
           <label className="button primary hero-upload">
             <Upload size={18} />
-            Upload dataset
+            Upload your dataset
+            <ArrowRight size={18} />
             <input type="file" accept=".csv,.xlsx,.xls" onChange={onUpload} />
           </label>
-          <button className="button ghost" type="button" onClick={onSample} disabled={loading}>
-            <Play size={17} />
-            Try sample
-          </button>
         </div>
-        <div className="hero-feature-row">
-          {features.map((feature) => (
-            <div key={feature.label}>
-              <span>{feature.label}</span>
-              <strong>{feature.value}</strong>
-            </div>
-          ))}
+        <div className="hero-trust">
+          <div className="trust-item">
+            <Shield size={15} />
+            <span>Private & secure</span>
+          </div>
+          <div className="trust-item">
+            <Zap size={15} />
+            <span>Results in seconds</span>
+          </div>
+          <div className="trust-item">
+            <TrendingUp size={15} />
+            <span>ML predictions</span>
+          </div>
         </div>
       </div>
 
@@ -473,8 +480,8 @@ function LandingHero({ onUpload, onSample, loading }) {
         <div className="orbit-ring ring-two" />
         <div className="portal-card upload-card">
           <Database size={22} />
-          <span>sales_data.csv</span>
-          <strong>42K rows scanned</strong>
+          <span>Dataset</span>
+          <strong>42K rows analyzed</strong>
         </div>
         <div className="portal-card insight-card">
           <Brain size={22} />
@@ -483,7 +490,7 @@ function LandingHero({ onUpload, onSample, loading }) {
         </div>
         <div className="portal-card chart-card">
           <BarChart3 size={22} />
-          <span>Auto chart</span>
+          <span>Visualization</span>
           <strong>Heatmap + trendline ready</strong>
         </div>
         <div className="data-stream stream-a" />
@@ -791,26 +798,18 @@ export default function App() {
   return (
     <div className="app-shell">
       <header className="topbar">
-        <div className="brand-block">
+        <button type="button" className="brand-block" onClick={() => { setDataset(null); setStatus(""); }}>
           <div className="brand-mark" aria-hidden="true">
             <BarChart3 size={23} />
           </div>
-          <div>
-            <p className="eyebrow">AI automated data analysis</p>
-            <h1>Langalytics</h1>
-            <p className="hero-line">Upload data, generate insights, build charts, and predict outcomes.</p>
-          </div>
-        </div>
+          <h1>Langalytics</h1>
+        </button>
         <div className="topbar-actions">
           <label className="button primary">
             <Upload size={17} />
-            Upload
+            Upload dataset
             <input type="file" accept=".csv,.xlsx,.xls" onChange={handleUpload} />
           </label>
-          <button className="button" type="button" onClick={loadSample} disabled={loading}>
-            <Database size={17} />
-            Sample
-          </button>
         </div>
       </header>
 
@@ -851,7 +850,7 @@ export default function App() {
 
         <section className="content-panel">
           {!dataset ? (
-            <LandingHero onUpload={handleUpload} onSample={loadSample} loading={loading} />
+            <LandingHero onUpload={handleUpload} loading={loading} />
           ) : (
             <>
               {activeTab === "overview" && (
