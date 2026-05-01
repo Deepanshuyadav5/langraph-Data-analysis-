@@ -479,9 +479,9 @@ function LandingHero({ onUpload, loading }) {
         <div className="orbit-ring ring-one" />
         <div className="orbit-ring ring-two" />
         <div className="portal-card upload-card">
-          <Database size={22} />
-          <span>Dataset</span>
-          <strong>42K rows analyzed</strong>
+          <TrendingUp size={22} />
+          <span>Prediction</span>
+          <strong>R² score 0.94 achieved</strong>
         </div>
         <div className="portal-card insight-card">
           <Brain size={22} />
