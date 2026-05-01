@@ -11,7 +11,6 @@ import {
   FileDown,
   Layers,
   LineChart,
-  Palette,
   PieChart,
   Play,
   Plus,
@@ -45,11 +44,6 @@ const tabs = [
   { id: "data", label: "Data", icon: Table2 },
 ];
 
-const themes = [
-  { id: "aurora", label: "Aurora" },
-  { id: "ember", label: "Ember" },
-  { id: "cosmic", label: "Cosmic" },
-];
 
 const plotConfig = {
   responsive: true,
@@ -67,16 +61,18 @@ const plotConfig = {
 const baseLayout = {
   autosize: true,
   paper_bgcolor: "transparent",
-  plot_bgcolor: "#ffffff",
+  plot_bgcolor: "#161b22",
   font: {
     family: "Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif",
-    color: "#26312f",
+    color: "#e2e8f0",
     size: 12,
   },
   margin: { t: 46, r: 28, b: 58, l: 58 },
   colorway: COLORS,
   hovermode: "closest",
   legend: { orientation: "h", y: -0.22 },
+  xaxis: { gridcolor: "rgba(139,148,158,0.15)", zerolinecolor: "rgba(139,148,158,0.2)" },
+  yaxis: { gridcolor: "rgba(139,148,158,0.15)", zerolinecolor: "rgba(139,148,158,0.2)" },
 };
 
 function formatNumber(value, digits = 2) {
@@ -503,7 +499,6 @@ function LandingHero({ onUpload, onSample, loading }) {
 }
 
 export default function App() {
-  const [theme, setTheme] = useState("aurora");
   const [dataset, setDataset] = useState(null);
   const [activeTab, setActiveTab] = useState("overview");
   const [loading, setLoading] = useState(false);
@@ -665,7 +660,7 @@ export default function App() {
     setExporting(true);
     try {
       const canvas = await html2canvas(dashboardRef.current, {
-        backgroundColor: "#f6f4ef",
+        backgroundColor: "#0d1117",
         scale: 2,
         useCORS: true,
       });
@@ -794,7 +789,7 @@ export default function App() {
   }
 
   return (
-    <div className="app-shell" data-theme={theme}>
+    <div className="app-shell">
       <header className="topbar">
         <div className="brand-block">
           <div className="brand-mark" aria-hidden="true">
@@ -807,21 +802,6 @@ export default function App() {
           </div>
         </div>
         <div className="topbar-actions">
-          <div className="theme-switcher" aria-label="Theme colors">
-            <Palette size={16} />
-            {themes.map((item) => (
-              <button
-                type="button"
-                key={item.id}
-                className={theme === item.id ? "active" : ""}
-                onClick={() => setTheme(item.id)}
-                title={`${item.label} theme`}
-                aria-label={`${item.label} theme`}
-              >
-                <span>{item.label}</span>
-              </button>
-            ))}
-          </div>
           <label className="button primary">
             <Upload size={17} />
             Upload
